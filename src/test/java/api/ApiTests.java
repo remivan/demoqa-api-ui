@@ -5,7 +5,6 @@ import models.BookDataModel;
 import models.LoginBodyModel;
 import models.LoginResponseModel;
 import org.openqa.selenium.Cookie;
-import tests.TestBase;
 import tests.TestData;
 
 import java.util.Collections;
@@ -21,7 +20,6 @@ public class ApiTests {
     LoginResponseModel loginResponseModel = authorizeRequest();
 
     public String token = loginResponseModel.getToken(),
-            username = loginResponseModel.getUsername(),
             userId = loginResponseModel.getUserId(),
             expires = loginResponseModel.getExpires();
 
@@ -40,7 +38,7 @@ public class ApiTests {
                 .extract().as(LoginResponseModel.class);
     }
 
-    @Step("Set cookie")
+    @Step("Куки")
     public ApiTests setCookie() {
         open("/favicon.ico");
         getWebDriver().manage().addCookie(new Cookie("userID", userId));
@@ -50,7 +48,7 @@ public class ApiTests {
         return this;
     }
 
-    @Step("Make request to delete all books")
+    @Step("Запрос на удаление всех книг")
     public ApiTests makeDeleteAllBooksRequest() {
         given(requestBookSpec(token))
                 .queryParams("UserId", userId)
@@ -63,7 +61,7 @@ public class ApiTests {
         return this;
     }
 
-    @Step("Make request to add a book")
+    @Step("Запрос на добавление книги")
     public void makeBookPostRequest(String isbn) {
         BookDataModel bookData = new BookDataModel();
         BookDataModel.CollectionOfIsbns isbnCollection = new BookDataModel.CollectionOfIsbns();
